@@ -7,9 +7,9 @@ pipeline {
     }
     parameters {
       string(
-        name: 'name',
+        email: 'email address',
         defaultValue: '',
-        description: 'Kindly enter ur name'
+        description: 'Kindly enter ur email'
       )
       string(
         name: 'place',
