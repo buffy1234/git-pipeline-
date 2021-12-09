@@ -1,0 +1,48 @@
+pipeline {
+    agent any 
+    options {
+        timeout(time: 1, unit: 'HOURS')
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+
+    }
+    parameters {
+      string(
+        name: 'name',
+        defaultValue: '',
+        description: 'Kindly enter ur name'
+      )
+      string(
+        name: 'place',
+        description: 'kindly enter ur place'
+      )
+      choice(
+        choices: ['dev', 'prod'], 
+        name: 'PARAMETER'               
+        )
+      }
+    environment {
+       def place = "${params.place}"
+       def name = "${params.name}"
+    }  
+    stages {
+        stage('Stage 1') {
+            steps {
+                echo "My name is ${name}" 
+            }
+         }
+        stage('Approval') {
+          steps {
+           script {
+             def userInput = input(id: 'confirm', message: 'Apply Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Kindly Provide Approval to proceed further', name: 'confirm'] ])
+              }
+       
+             } 
+         }
+        stage('Stage 2') {
+            steps {
+                echo "I am in ${place}"
+               }
+            }
+        
+    }
+}
